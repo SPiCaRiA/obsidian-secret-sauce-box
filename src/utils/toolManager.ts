@@ -41,8 +41,13 @@ export function buildToolManager({
       unloadTool(toolName),
     );
 
-  const loadToolsByStage = (loadStage: ToolLoadStage) =>
-    toolLoadStageMap[loadStage].forEach(toolName => loadTool(toolName));
+  const loadToolsByStage = (
+    loadStage: ToolLoadStage,
+    checkEnabled: (toolName: ToolName) => boolean,
+  ) =>
+    toolLoadStageMap[loadStage].forEach(
+      toolName => checkEnabled(toolName) && loadTool(toolName),
+    );
 
   return {loadTool, unloadTool, unloadAll, loadToolsByStage};
 }

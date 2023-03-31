@@ -8,7 +8,7 @@ import type {ToolName} from 'tools.types';
 import {DEFAULT_SETTINGS, toolLoadStageMap, toolMap} from 'defaults';
 import {Plugin} from 'obsidian';
 import {SecretSauceSettingTab} from 'settings';
-import {buildToolManager} from 'tools';
+import {buildToolManager} from 'toolManager';
 import {toolLoadStageEnum, ToolManager} from 'tools.types';
 
 export default class SecretSaucePlugin extends Plugin {
@@ -31,7 +31,7 @@ export default class SecretSaucePlugin extends Plugin {
 
     this.loadTools();
 
-    // ------ Exmaples --------
+    // ------ Examples --------
     // If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
     // Using this function will automatically remove the event listener when this plugin is disabled.
     // this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
@@ -70,11 +70,18 @@ export default class SecretSaucePlugin extends Plugin {
       ),
     );
 
+    const checkEnabled = (toolName: ToolName) => this.settings[toolName];
     // Load immedate tools.
-    this.toolManager.loadToolsByStage(toolLoadStageEnum.immediate);
+    this.toolManager.loadToolsByStage(
+      toolLoadStageEnum.immediate,
+      checkEnabled,
+    );
     // Register tools that are supposed to be loaded after layout ready.
     this.app.workspace.onLayoutReady(() =>
-      this.toolManager.loadToolsByStage(toolLoadStageEnum.afterLayoutReady),
+      this.toolManager.loadToolsByStage(
+        toolLoadStageEnum.afterLayoutReady,
+        checkEnabled,
+      ),
     );
   }
 

@@ -21,7 +21,10 @@ export type ToolManager = {
   loadTool: (toolName: ToolName) => void;
   unloadTool: (toolName: ToolName) => void;
   unloadAll: () => void;
-  loadToolsByStage: (loadStage: ToolLoadStage) => void;
+  loadToolsByStage: (
+    loadStage: ToolLoadStage,
+    checkEnabled: (toolName: ToolName) => boolean,
+  ) => void;
 };
 
 // --- Maps of Tools ---
