@@ -4,8 +4,9 @@ import type {SauceMap, SauceName, SauceNameByLoadStageMap} from 'Sauces.types';
 import {doubleClickMaximizeActive} from 'DoubleClickMaximizeActive';
 import {preserveActiveTab} from 'PreserveActiveTab';
 import {sauceLoadStageEnum} from 'Sauces.types';
+import {setDocGlobalLangAttribute} from 'SetDocGlobalLangAttribute';
 
-// --- Sauces ---
+// --- Secret Sauces ---
 export const sauceMap: SauceMap = {
   doubleClickMaximizeActive: {
     load: doubleClickMaximizeActive,
@@ -13,6 +14,10 @@ export const sauceMap: SauceMap = {
   },
   preserveActiveTab: {
     load: preserveActiveTab,
+    loadStage: sauceLoadStageEnum.afterLayoutReady,
+  },
+  setDocGlobalLangAttribute: {
+    load: setDocGlobalLangAttribute,
     loadStage: sauceLoadStageEnum.afterLayoutReady,
   },
 };
@@ -32,9 +37,12 @@ export const sauceLoadStageMap: SauceNameByLoadStageMap = (function () {
 const DEFAULT_TOOL_TOGGLES: SettingsSauceToggles = {
   doubleClickMaximizeActive: true,
   preserveActiveTab: true,
+  setDocGlobalLangAttribute: false,
 };
 
 export const DEFAULT_SETTINGS: Settings = {
   ...DEFAULT_TOOL_TOGGLES,
   doubleClickMaximizeActivePaneShrinkMin: 'calc(13.75 * 1 rem)',
+  globalLangSubtag: 'en',
+  hyphenBreakBodyEnabled: false,
 };

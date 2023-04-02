@@ -12,7 +12,7 @@ export default class SecretSauceBoxPlugin extends Plugin {
   private settings: Settings;
   private sauceManager: SauceManager;
   private settingsChangeCallbacks: {
-    [settingsName in keyof Settings]?: SettingsChangeCallback[];
+    [settingsName in keyof Settings]?: SettingsChangeCallback<keyof Settings>[];
   } = {};
 
   // --- General Obsidian Plug-in Methods ---
@@ -70,9 +70,9 @@ export default class SecretSauceBoxPlugin extends Plugin {
     );
   }
 
-  public onSettingsChange(
-    settingsName: keyof Settings,
-    callback: SettingsChangeCallback,
+  public onSettingsChange<K extends keyof Settings>(
+    settingsName: K,
+    callback: SettingsChangeCallback<K>,
   ) {
     if (!this.settingsChangeCallbacks[settingsName]) {
       this.settingsChangeCallbacks[settingsName] = [];

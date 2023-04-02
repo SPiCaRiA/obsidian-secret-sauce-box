@@ -1,6 +1,9 @@
 import type {Plugin} from 'Plugin.types';
 
-export type SauceName = 'doubleClickMaximizeActive' | 'preserveActiveTab';
+export type SauceName =
+  | 'doubleClickMaximizeActive'
+  | 'preserveActiveTab'
+  | 'setDocGlobalLangAttribute';
 
 export const sauceLoadStageEnum = {
   immediate: 'immediate',
