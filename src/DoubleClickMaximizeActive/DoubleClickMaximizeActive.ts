@@ -1,4 +1,4 @@
-import type {DOMListener} from 'Events.type';
+import type {DOMListener} from 'Events.types';
 import type {MarkedHTMLElement, WorkspaceLeafExt} from 'ObExt.types';
 import type {Plugin} from 'Plugin.types';
 import type {ToolUnloader} from 'Tools.types';

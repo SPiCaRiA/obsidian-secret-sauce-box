@@ -6,7 +6,7 @@ import type {
   ObListener,
   ObRegisteredEl,
   UniqueEvtID,
-} from 'Events.type';
+} from 'Events.types';
 
 export class ToolEventDelegate {
   private domEventMap: DOMEventRecordMap = new Map();
