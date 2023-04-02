@@ -21,10 +21,25 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
     new Setting(containerEl)
       .setName('Enable double click maximize active')
       .setDesc(
-        'For unstacked tabs: double clicking the tab headers will ' +
-          'maximize the active pane and squeeze the other panes. ' +
-          'For stacked tabs: double clicking the tab headers will ' +
-          'maximize the active sliding tab and hide the others.',
+        createFragment(el => {
+          el.createEl('strong').appendText('For unstacked tabs');
+          el.appendText(
+            ': double clicking the tab headers will maximize the active ' +
+              'pane and squeeze the other panes ' +
+              '(same behavior as double clicking tab headers in VSCode).',
+          );
+          el.createEl('br');
+          el.createEl('strong').appendText('For stacked tabs');
+          el.appendText(
+            ': double clicking the tab headers will maximize the active sliding ' +
+              'tab and hide the others.',
+          );
+          el.createEl('br');
+          el.createEl('br');
+          el.createEl('em').appendText(
+            'Double click again to turn off the maximizing behavior.',
+          );
+        }),
       )
       .addToggle(toggle =>
         toggle
