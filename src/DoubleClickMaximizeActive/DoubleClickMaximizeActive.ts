@@ -1,5 +1,9 @@
 import type {DOMListener} from 'Events.types';
-import type {MarkedHTMLElement, WorkspaceLeafExt} from 'ObExt.types';
+import type {
+  MarkedHTMLElement,
+  WorkspaceLeafExt,
+  WorkspaceExt,
+} from 'ObExt.types';
 import type {Plugin} from 'Plugin.types';
 
 import {EventDelegate} from 'EventDelegate';
@@ -181,11 +185,7 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
   const maxActiveTabEnabledFlag = Symbol('pane-max-tab-enabled-flag');
 
   const getActivePane = () =>
-    (
-      plugin.app.workspace.getLeaf(
-        false /* get active leaf */,
-      ) as WorkspaceLeafExt
-    ).parent;
+    (plugin.app.workspace as WorkspaceExt).activeTabGroup;
   const rootSplit = getActivePane().getRoot() as WorkspaceLeafExt;
 
   // --- Tab Header Double Click Event ---
@@ -290,7 +290,6 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
     eventDelegate.removeAll();
 
     // Clean-up tab maximizing styles.
-    // TODO after using the new implementation.
     toggleMaximizeActiveTab(
       getActivePane().containerEl as FlaggedHTMLElement,
       maxActiveTabEnabledFlag,

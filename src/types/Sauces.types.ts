@@ -1,6 +1,6 @@
 import type {Plugin} from 'Plugin.types';
 
-export type SauceName = 'doubleClickMaximizeActive';
+export type SauceName = 'doubleClickMaximizeActive' | 'preserveActiveTab';
 
 export const sauceLoadStageEnum = {
   immediate: 'immediate',

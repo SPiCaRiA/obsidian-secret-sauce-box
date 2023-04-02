@@ -75,5 +75,19 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           }),
       );
+
+    // --- Preserve Active Tab ---
+    containerEl.createEl('h2', {text: 'Preserve Active Tab'});
+
+    new Setting(containerEl)
+      .setName('Enable preserve active tab')
+      .addToggle(toggle =>
+        toggle
+          .setValue(this.plugin.getSettings('preserveActiveTab'))
+          .onChange(async value => {
+            this.plugin.setSettings('preserveActiveTab', value);
+            await this.plugin.saveSettings();
+          }),
+      );
   }
 }

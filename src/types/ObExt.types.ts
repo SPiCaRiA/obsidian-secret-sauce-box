@@ -1,4 +1,8 @@
-import type {WorkspaceLeaf} from 'obsidian';
+import type {WorkspaceLeaf, Workspace} from 'obsidian';
+
+export type MarkedHTMLElement<T> = HTMLElement & {
+  [label in symbol]: T;
+};
 
 export type WorkspaceLeafExt = {
   containerEl: HTMLElement;
@@ -7,6 +11,11 @@ export type WorkspaceLeafExt = {
   children: WorkspaceLeafExt[];
 } & WorkspaceLeaf;
 
-export type MarkedHTMLElement<T> = HTMLElement & {
-  [label in symbol]: T;
+export type WorkspaceExt = Workspace & {
+  activeTabGroup: WorkspaceLeafExt;
+};
+
+export type WorkspaceTabGroupExt = WorkspaceLeafExt & {
+  selectTab: (tab: WorkspaceLeaf) => void;
+  selectTabIndex: (tabIndex: number) => void;
 };
