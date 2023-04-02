@@ -1,4 +1,4 @@
-import type {Plugin} from 'plugin.types';
+import type {Plugin} from 'Plugin.types';
 
 export type ToolName = 'doubleClickMaximizeActive';
 

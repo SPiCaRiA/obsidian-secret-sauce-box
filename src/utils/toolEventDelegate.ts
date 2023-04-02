@@ -1,4 +1,3 @@
-// import type {EventRef, Events as ObRegisteredEl} from 'obsidian';
 import type {
   DOMEventRecordMap,
   DOMListener,
@@ -7,7 +6,7 @@ import type {
   ObListener,
   ObRegisteredEl,
   UniqueEvtID,
-} from 'events.type';
+} from 'Events.type';
 
 export class ToolEventDelegate {
   private domEventMap: DOMEventRecordMap = new Map();

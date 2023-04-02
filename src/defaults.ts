@@ -1,9 +1,8 @@
-import type {Settings, SettingsToolToggles} from 'settings.types';
-import type {ToolMap, ToolName, ToolNameByLoadStageMap} from 'tools.types';
+import type {Settings, SettingsToolToggles} from 'Settings.types';
+import type {ToolMap, ToolName, ToolNameByLoadStageMap} from 'Tools.types';
 
 import {doubleClickMaximizeActive} from 'DoubleClickMaximizeActive';
-
-import {toolLoadStageEnum} from 'tools.types';
+import {toolLoadStageEnum} from 'Tools.types';
 
 // --- Tools ---
 export const toolMap: ToolMap = {

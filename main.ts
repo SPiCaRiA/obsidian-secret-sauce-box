@@ -2,14 +2,15 @@ import type {
   Settings,
   SettingsChangeCallback,
   SettingsValue,
-} from 'settings.types';
-import type {ToolName} from 'tools.types';
+} from 'Settings.types';
+import type {ToolName} from 'Tools.types';
 
-import {DEFAULT_SETTINGS, toolLoadStageMap, toolMap} from 'defaults';
+import {DEFAULT_SETTINGS, toolLoadStageMap, toolMap} from 'Defaults';
+import {SecretSauceSettingTab} from 'Settings';
+import {buildToolManager} from 'ToolManager';
+import {toolLoadStageEnum, ToolManager} from 'Tools.types';
+
 import {Plugin} from 'obsidian';
-import {SecretSauceSettingTab} from 'settings';
-import {buildToolManager} from 'toolManager';
-import {toolLoadStageEnum, ToolManager} from 'tools.types';
 
 export default class SecretSaucePlugin extends Plugin {
   private settings: Settings;

@@ -1,4 +1,4 @@
-import {ToolName} from 'tools.types';
+import {ToolName} from 'Tools.types';
 
 export type SettingsToolToggles = Record<ToolName, boolean>;
 

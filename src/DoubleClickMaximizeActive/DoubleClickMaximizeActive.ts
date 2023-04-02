@@ -1,10 +1,11 @@
-import type {DOMListener} from 'events.type';
+import type {DOMListener} from 'Events.type';
 import type {MarkedHTMLElement, WorkspaceLeafExt} from 'ObExt.types';
-import type {Plugin} from 'plugin.types';
-import type {ToolUnloader} from 'tools.types';
+import type {Plugin} from 'Plugin.types';
+import type {ToolUnloader} from 'Tools.types';
+
+import {ToolEventDelegate} from 'ToolEventDelegate';
 
 import jstyle from 'jstyle';
-import {ToolEventDelegate} from 'toolEventDelegate';
 
 type FlaggedHTMLElement = MarkedHTMLElement<boolean>;
 

@@ -1,4 +1,4 @@
-import type {Plugin} from 'plugin.types';
+import type {Plugin} from 'Plugin.types';
 import type {
   ToolLoadStage,
   ToolManager,
@@ -6,7 +6,7 @@ import type {
   ToolName,
   ToolNameByLoadStageMap,
   ToolUnloaderMap,
-} from 'tools.types';
+} from 'Tools.types';
 
 type BuildToolManagerParams = {
   toolMap: ToolMap;
