@@ -28,7 +28,7 @@
 
     "no-prototype-builtins": "off",
     "no-var": "error",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "prefer-const": "error",
     "no-useless-computed-key": "error",
 

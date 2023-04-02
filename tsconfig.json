@@ -18,7 +18,7 @@
         "src/*",
         "src/types/*",
         "src/utils/*",
-        "src/maximizeActivePane/*"
+        "src/DoubleClickMaximizeActive/*"
       ]
     }
   },

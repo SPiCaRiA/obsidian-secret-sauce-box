@@ -1,34 +1,17 @@
-import type {EventRef, Events as ObRegisteredEl} from 'obsidian';
-
-type EventType = keyof HTMLElementEventMap;
-type UniqueEvtID = symbol;
-
-type DOMListener<T extends EventType> = (
-  this: HTMLElement,
-  ev: HTMLElementEventMap[T],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-) => any;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Listener = (...args: any[]) => any;
+// import type {EventRef, Events as ObRegisteredEl} from 'obsidian';
+import type {
+  DOMEventRecordMap,
+  DOMListener,
+  EventType,
+  ObEventRecordMap,
+  ObListener,
+  ObRegisteredEl,
+  UniqueEvtID,
+} from 'events.type';
 
 export class ToolEventDelegate {
-  private domEventMap: Map<
-    UniqueEvtID,
-    {
-      el: HTMLElement;
-      type: EventType;
-      listener: DOMListener<EventType>;
-      options?: boolean | AddEventListenerOptions;
-    }
-  > = new Map();
-  private obEventMap: Map<
-    UniqueEvtID,
-    {
-      obEl: ObRegisteredEl;
-      evtRef: EventRef;
-    }
-  > = new Map();
+  private domEventMap: DOMEventRecordMap = new Map();
+  private obEventMap: ObEventRecordMap = new Map();
 
   // --- DOM Events ---
   public registerDOMEvent<K extends EventType>(
@@ -60,7 +43,7 @@ export class ToolEventDelegate {
   public registerObEvent(
     win: ObRegisteredEl,
     type: string,
-    listener: Listener,
+    listener: ObListener,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ctx?: any,
   ): UniqueEvtID {

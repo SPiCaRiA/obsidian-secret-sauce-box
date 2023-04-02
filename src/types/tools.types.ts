@@ -1,6 +1,6 @@
 import type {Plugin} from 'plugin.types';
 
-export type ToolName = 'maximizeActivePane';
+export type ToolName = 'doubleClickMaximizeActive';
 
 export const toolLoadStageEnum = {
   immediate: 'immediate',

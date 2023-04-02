@@ -22,9 +22,9 @@ export class SecretSauceSettingTab extends PluginSettingTab {
       .setName('Enable maximize active pane')
       .addToggle(toggle =>
         toggle
-          .setValue(this.plugin.getSettings('maximizeActivePane'))
+          .setValue(this.plugin.getSettings('doubleClickMaximizeActive'))
           .onChange(async value => {
-            this.plugin.setSettings('maximizeActivePane', value);
+            this.plugin.setSettings('doubleClickMaximizeActive', value);
             await this.plugin.saveSettings();
           }),
       );

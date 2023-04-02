@@ -1,13 +1,14 @@
 import type {Settings, SettingsToolToggles} from 'settings.types';
 import type {ToolMap, ToolName, ToolNameByLoadStageMap} from 'tools.types';
 
-import {maximizeActivePane} from 'maximizeActivePane';
+import {doubleClickMaximizeActive} from 'DoubleClickMaximizeActive';
+
 import {toolLoadStageEnum} from 'tools.types';
 
 // --- Tools ---
 export const toolMap: ToolMap = {
-  maximizeActivePane: {
-    load: maximizeActivePane,
+  doubleClickMaximizeActive: {
+    load: doubleClickMaximizeActive,
     loadStage: toolLoadStageEnum.afterLayoutReady,
   },
 };
@@ -25,7 +26,7 @@ export const toolLoadStageMap: ToolNameByLoadStageMap = (function () {
 
 // --- Settings ---
 const DEFAULT_TOOL_TOGGLES: SettingsToolToggles = {
-  maximizeActivePane: true,
+  doubleClickMaximizeActive: true,
 };
 
 export const DEFAULT_SETTINGS: Settings = {
