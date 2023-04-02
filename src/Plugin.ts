@@ -93,4 +93,8 @@ export default class SecretSauceBoxPlugin extends Plugin {
     );
     this.settings[settingsName] = val;
   }
+
+  public getDefaultSettings<K extends keyof Settings>(settingsName: K) {
+    return DEFAULT_SETTINGS[settingsName];
+  }
 }

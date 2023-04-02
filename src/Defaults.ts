@@ -30,5 +30,5 @@ const DEFAULT_TOOL_TOGGLES: SettingsSauceToggles = {
 
 export const DEFAULT_SETTINGS: Settings = {
   ...DEFAULT_TOOL_TOGGLES,
-  doubleClickMaximizeActivePaneShrinkMin: 'calc(13.75 * 1rem)',
+  doubleClickMaximizeActivePaneShrinkMin: 'calc(13.75 * 1 rem)',
 };
