@@ -2,7 +2,7 @@ import type {Plugin} from 'Plugin.types';
 
 import {App, PluginSettingTab, Setting} from 'obsidian';
 
-export class SecretSauceSettingTab extends PluginSettingTab {
+export class SecretSauceBoxSettingTab extends PluginSettingTab {
   plugin: Plugin;
 
   constructor(app: App, plugin: Plugin) {
@@ -15,11 +15,10 @@ export class SecretSauceSettingTab extends PluginSettingTab {
 
     containerEl.empty();
 
-    containerEl.createEl('h2', {text: 'My Secret Sauce'});
-    containerEl.createEl('h3', {text: 'Toogle Tools'});
+    containerEl.createEl('h2', {text: 'Secret Sauce Box'});
 
     new Setting(containerEl)
-      .setName('Enable maximize active pane')
+      .setName('Enable double click maximize active')
       .addToggle(toggle =>
         toggle
           .setValue(this.plugin.getSettings('doubleClickMaximizeActive'))

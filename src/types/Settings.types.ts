@@ -1,11 +1,11 @@
-import {ToolName} from 'Tools.types';
+import {SauceName} from 'Sauces.types';
 
-export type SettingsToolToggles = Record<ToolName, boolean>;
+export type SettingsSauceToggles = Record<SauceName, boolean>;
 
-// For now, all settings are used to toggle tools. But in future,
+// For now, all settings are used to toggle sauces. But in future,
 // we might have more global settings, which can be unioned with
 // the toggle settings.
-export type Settings = SettingsToolToggles;
+export type Settings = SettingsSauceToggles;
 
 export type SettingsValue = boolean | string;
 

@@ -8,7 +8,7 @@ import type {
   UniqueEvtID,
 } from 'Events.types';
 
-export class ToolEventDelegate {
+export class EventDelegate {
   private domEventMap: DOMEventRecordMap = new Map();
   private obEventMap: ObEventRecordMap = new Map();
 

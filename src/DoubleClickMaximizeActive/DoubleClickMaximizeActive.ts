@@ -1,9 +1,8 @@
 import type {DOMListener} from 'Events.types';
 import type {MarkedHTMLElement, WorkspaceLeafExt} from 'ObExt.types';
 import type {Plugin} from 'Plugin.types';
-import type {ToolUnloader} from 'Tools.types';
 
-import {ToolEventDelegate} from 'ToolEventDelegate';
+import {EventDelegate} from 'EventDelegate';
 
 import jstyle from 'jstyle';
 
@@ -30,7 +29,7 @@ const styles = jstyle({
 });
 
 function registerDoubleClickEventOnTabHeaders(
-  eventDelegate: ToolEventDelegate,
+  eventDelegate: EventDelegate,
   labelRegistered: symbol,
   domListener: DOMListener<'dblclick'>,
 ) {
@@ -174,7 +173,7 @@ function disableMaximizeActivePane(split: WorkspaceLeafExt) {
   });
 }
 
-export function doubleClickMaximizeActive(plugin: Plugin): ToolUnloader {
+export function doubleClickMaximizeActive(plugin: Plugin) {
   // By default, maximizing behaviors are off.
   // Pane maximizing flag is gobal, but tab maximizing flag is local to each
   // pane.
@@ -224,7 +223,7 @@ export function doubleClickMaximizeActive(plugin: Plugin): ToolUnloader {
     e.stopPropagation();
   };
 
-  const eventDelegate = new ToolEventDelegate();
+  const eventDelegate = new EventDelegate();
   const labelRegistered = Symbol('dblclick-registered');
   // Register event on initially-opened tab headers.
   registerDoubleClickEventOnTabHeaders(

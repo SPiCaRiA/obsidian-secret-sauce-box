@@ -3,18 +3,18 @@ import type {
   SettingsChangeCallback,
   SettingsValue,
 } from 'Settings.types';
-import type {ToolName} from 'Tools.types';
+import type {SauceName} from 'Sauces.types';
 
-import {DEFAULT_SETTINGS, toolLoadStageMap, toolMap} from 'Defaults';
-import {SecretSauceSettingTab} from 'Settings';
-import {buildToolManager} from 'ToolManager';
-import {toolLoadStageEnum, ToolManager} from 'Tools.types';
+import {DEFAULT_SETTINGS, sauceLoadStageMap, sauceMap} from 'Defaults';
+import {SecretSauceBoxSettingTab} from 'Settings';
+import {buildSauceManager} from 'SauceManager';
+import {sauceLoadStageEnum, SauceManager} from 'Sauces.types';
 
 import {Plugin} from 'obsidian';
 
-export default class SecretSaucePlugin extends Plugin {
+export default class SecretSauceBoxPlugin extends Plugin {
   private settings: Settings;
-  private toolManager: ToolManager;
+  private sauceManager: SauceManager;
   private settingsChangeCallbacks: {
     [settingsName in keyof Settings]?: SettingsChangeCallback[];
   } = {};
@@ -22,20 +22,20 @@ export default class SecretSaucePlugin extends Plugin {
   // --- General Obsidian Plug-in Methods ---
   public async onload() {
     await this.loadSettings();
-    this.addSettingTab(new SecretSauceSettingTab(this.app, this));
+    this.addSettingTab(new SecretSauceBoxSettingTab(this.app, this));
 
-    this.toolManager = buildToolManager({
-      toolMap,
-      toolLoadStageMap,
+    this.sauceManager = buildSauceManager({
+      sauceMap,
+      sauceLoadStageMap,
       plugin: this,
     });
 
-    this.loadTools();
+    this.loadSauces();
   }
 
   public onunload() {
-    // Unload all tools.
-    this.toolManager.unloadAll();
+    // Unload all sauces.
+    this.sauceManager.unloadAll();
   }
 
   public async loadSettings() {
@@ -47,28 +47,28 @@ export default class SecretSaucePlugin extends Plugin {
   }
 
   // --- Custom Methods ---
-  private loadTools() {
-    // Register on settings change callback for all tools.
-    (Object.keys(toolMap) as ToolName[]).forEach(toolName =>
-      this.onSettingsChange(toolName, newVal =>
+  private loadSauces() {
+    // Register on settings change callback for all sauces.
+    (Object.keys(sauceMap) as SauceName[]).forEach(sauceName =>
+      this.onSettingsChange(sauceName, newVal =>
         newVal
-          ? // Tool enabled.
-            this.toolManager.loadTool(toolName)
-          : // Tool disabled.
-            this.toolManager.unloadTool(toolName),
+          ? // Sauce enabled.
+            this.sauceManager.loadSauce(sauceName)
+          : // Sauce disabled.
+            this.sauceManager.unloadSauce(sauceName),
       ),
     );
 
-    const checkEnabled = (toolName: ToolName) => this.settings[toolName];
-    // Load immedate tools.
-    this.toolManager.loadToolsByStage(
-      toolLoadStageEnum.immediate,
+    const checkEnabled = (sauceName: SauceName) => this.settings[sauceName];
+    // Load immedate sauces.
+    this.sauceManager.loadSaucesByStage(
+      sauceLoadStageEnum.immediate,
       checkEnabled,
     );
-    // Register tools that are supposed to be loaded after layout ready.
+    // Register sauces that are supposed to be loaded after layout ready.
     this.app.workspace.onLayoutReady(() =>
-      this.toolManager.loadToolsByStage(
-        toolLoadStageEnum.afterLayoutReady,
+      this.sauceManager.loadSaucesByStage(
+        sauceLoadStageEnum.afterLayoutReady,
         checkEnabled,
       ),
     );

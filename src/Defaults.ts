@@ -1,30 +1,30 @@
-import type {Settings, SettingsToolToggles} from 'Settings.types';
-import type {ToolMap, ToolName, ToolNameByLoadStageMap} from 'Tools.types';
+import type {Settings, SettingsSauceToggles} from 'Settings.types';
+import type {SauceMap, SauceName, SauceNameByLoadStageMap} from 'Sauces.types';
 
 import {doubleClickMaximizeActive} from 'DoubleClickMaximizeActive';
-import {toolLoadStageEnum} from 'Tools.types';
+import {sauceLoadStageEnum} from 'Sauces.types';
 
-// --- Tools ---
-export const toolMap: ToolMap = {
+// --- Sauces ---
+export const sauceMap: SauceMap = {
   doubleClickMaximizeActive: {
     load: doubleClickMaximizeActive,
-    loadStage: toolLoadStageEnum.afterLayoutReady,
+    loadStage: sauceLoadStageEnum.afterLayoutReady,
   },
 };
 
-export const toolLoadStageMap: ToolNameByLoadStageMap = (function () {
-  const res: Partial<ToolNameByLoadStageMap> = {};
-  Object.values(toolLoadStageEnum).forEach(
+export const sauceLoadStageMap: SauceNameByLoadStageMap = (function () {
+  const res: Partial<SauceNameByLoadStageMap> = {};
+  Object.values(sauceLoadStageEnum).forEach(
     stage =>
-      (res[stage] = (Object.keys(toolMap) as ToolName[]).filter(
-        key => toolMap[key].loadStage === stage,
+      (res[stage] = (Object.keys(sauceMap) as SauceName[]).filter(
+        key => sauceMap[key].loadStage === stage,
       )),
   );
-  return res as ToolNameByLoadStageMap;
+  return res as SauceNameByLoadStageMap;
 })();
 
 // --- Settings ---
-const DEFAULT_TOOL_TOGGLES: SettingsToolToggles = {
+const DEFAULT_TOOL_TOGGLES: SettingsSauceToggles = {
   doubleClickMaximizeActive: true,
 };
 
