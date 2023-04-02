@@ -1,9 +1,9 @@
 {
-	"id": "obsidian-secret-sauce",
-	"name": "Secret Sauce",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Simply putting all my nice little JavaScript tool snippets in one plug-in, with some flexibility of settings page.",
-	"author": "Me",
-	"isDesktopOnly": false
+  "id": "obsidian-secret-sauce-box",
+  "name": "Secret Sauce Box",
+  "version": "0.0.1",
+  "minAppVersion": "0.15.0",
+  "description": "A bundle plug-in of my JavaScript secret sauce snippets for Obsidian (https://obsidian.md).",
+  "author": "SPiCaRia",
+  "isDesktopOnly": false
 }

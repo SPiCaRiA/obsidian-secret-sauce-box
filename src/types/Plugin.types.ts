@@ -1,3 +1,3 @@
-import type SecretSaucePlugin from 'main';
+import type SecretSaucePlugin from 'Plugin';
 
 export {SecretSaucePlugin as Plugin};
