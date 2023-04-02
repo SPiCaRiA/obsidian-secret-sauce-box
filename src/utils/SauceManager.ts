@@ -14,6 +14,18 @@ type BuildSauceManagerParams = {
   plugin: Plugin;
 };
 
+/**
+ * Type guard function.
+ */
+function hasUnloader<K extends SauceName>(
+  unloaderMap: SauceUnloaderMap,
+  sauceName: K,
+): unloaderMap is SauceUnloaderMap & {
+  [sauceName in K]: Required<SauceUnloaderMap>[K];
+} {
+  return unloaderMap[sauceName] !== undefined;
+}
+
 export function buildSauceManager({
   sauceMap,
   sauceLoadStageMap,
@@ -22,18 +34,16 @@ export function buildSauceManager({
   const unloaderMap: SauceUnloaderMap = {};
 
   const loadSauce = (sauceName: SauceName) => {
-    if (unloaderMap[sauceName]) {
-      throw new Error(`Unexpected loaded sauce: ${sauceName}`);
+    if (!hasUnloader(unloaderMap, sauceName)) {
+      unloaderMap[sauceName] = sauceMap[sauceName].load(plugin);
     }
-    unloaderMap[sauceName] = sauceMap[sauceName].load(plugin);
   };
 
   const unloadSauce = (sauceName: SauceName) => {
-    if (unloaderMap[sauceName] === undefined) {
-      throw new Error(`Unexpected unloaded sauce: ${sauceName}`);
+    if (hasUnloader(unloaderMap, sauceName)) {
+      unloaderMap[sauceName]();
+      delete (unloaderMap as SauceUnloaderMap)[sauceName];
     }
-    unloaderMap[sauceName]?.();
-    delete unloaderMap[sauceName];
   };
 
   const unloadAll = () =>

@@ -1,8 +1,4 @@
-import type {
-  Settings,
-  SettingsChangeCallback,
-  SettingsValue,
-} from 'Settings.types';
+import type {Settings, SettingsChangeCallback} from 'Settings.types';
 import type {SauceName} from 'Sauces.types';
 
 import {DEFAULT_SETTINGS, sauceLoadStageMap, sauceMap} from 'Defaults';
@@ -50,8 +46,8 @@ export default class SecretSauceBoxPlugin extends Plugin {
   private loadSauces() {
     // Register on settings change callback for all sauces.
     (Object.keys(sauceMap) as SauceName[]).forEach(sauceName =>
-      this.onSettingsChange(sauceName, newVal =>
-        newVal
+      this.onSettingsChange(sauceName, sauceEnabled =>
+        sauceEnabled
           ? // Sauce enabled.
             this.sauceManager.loadSauce(sauceName)
           : // Sauce disabled.
@@ -84,23 +80,17 @@ export default class SecretSauceBoxPlugin extends Plugin {
     this.settingsChangeCallbacks[settingsName]?.push(callback);
   }
 
-  public getSettings(settingsName: keyof Settings) {
+  public getSettings<K extends keyof Settings>(settingsName: K) {
     return this.settings[settingsName];
   }
 
-  public setSettings(settingsName: keyof Settings, val: SettingsValue) {
+  public setSettings<K extends keyof Settings>(
+    settingsName: K,
+    val: Settings[K],
+  ) {
     this.settingsChangeCallbacks[settingsName]?.forEach(cb =>
       cb(val, this.settings[settingsName]),
     );
-
-    if (typeof val === typeof this.settings[settingsName]) {
-      // Under runtime type check, safe.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.settings[settingsName] = val as any;
-    } else {
-      console.error(
-        `Incompatible settings value for ${settingsName}: ${val} (${typeof val})`,
-      );
-    }
+    this.settings[settingsName] = val;
   }
 }
