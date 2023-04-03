@@ -7,30 +7,34 @@ import type {
 import type {Plugin} from 'Plugin.types';
 
 import {EventDelegate} from 'EventDelegate';
+import {MAGIC_DEBOUNCE_TIMEOUT} from 'Defaults';
 
 import jstyle from 'jstyle';
+import {debounce} from 'obsidian';
 
 type FlaggedHTMLElement = MarkedHTMLElement<boolean>;
 
-const styles = jstyle({
-  maximizeActiveTab: {
-    width: '100% !important',
-  },
+const styles = jstyle.create(
+  {
+    maximizeActiveTab: {
+      width: '100% !important',
+    },
 
-  hideNonActiveTab: {
-    minWidth: '0px !important',
-    maxWidth: '0px !important',
-  },
+    hideNonActiveTab: {
+      minWidth: '0px !important',
+      maxWidth: '0px !important',
+    },
 
-  // Post-shrink values are the same as that in VSCode.
-  shrinkPaneOrSplitVetical: {
-    maxWidth: 'calc(13.75 * 1rem)',
-  },
+    shrinkPaneOrSplitVertical: {
+      maxWidth: ({maxWidth}) => maxWidth,
+    },
 
-  shrinkPaneOrSplitHorizontal: {
-    maxHeight: 'calc(13.75 * 1rem)',
+    shrinkPaneOrSplitHorizontal: {
+      maxHeight: ({maxHeight}) => maxHeight,
+    },
   },
-});
+  {link: true},
+);
 
 function registerDoubleClickEventOnTabHeaders(
   eventDelegate: EventDelegate,
@@ -68,13 +72,16 @@ function toggleMaximizeActiveTab(
 
   paneEl.querySelectorAll('div.workspace-leaf').forEach(tabEl => {
     // Remove previous styles if exist.
-    tabEl.removeClass(styles.hideNonActiveTab, styles.maximizeActiveTab);
+    tabEl.removeClass(
+      jstyle(styles.hideNonActiveTab),
+      jstyle(styles.maximizeActiveTab),
+    );
 
     if (paneEl[enabledFlag]) {
       if (tabEl.hasClass('mod-active')) {
-        tabEl.addClass(styles.maximizeActiveTab);
+        tabEl.addClass(jstyle(styles.maximizeActiveTab));
       } else {
-        tabEl.addClass(styles.hideNonActiveTab);
+        tabEl.addClass(jstyle(styles.hideNonActiveTab));
       }
     }
   });
@@ -82,8 +89,8 @@ function toggleMaximizeActiveTab(
 
 function getSplitContainerShrinkClass(split: WorkspaceLeafExt) {
   return split.containerEl.hasClass('mod-vertical')
-    ? styles.shrinkPaneOrSplitVetical
-    : styles.shrinkPaneOrSplitHorizontal;
+    ? jstyle(styles.shrinkPaneOrSplitVertical)
+    : jstyle(styles.shrinkPaneOrSplitHorizontal);
 }
 
 /**
@@ -188,6 +195,14 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
     (plugin.app.workspace as WorkspaceExt).activeTabGroup;
   const rootSplit = getActivePane().getRoot() as WorkspaceLeafExt;
 
+  // Apply initial styles from setting values.
+  jstyle(styles.shrinkPaneOrSplitVertical, {
+    maxWidth: plugin.getSettings('doubleClickMaximizeActivePaneShrinkMin'),
+  });
+  jstyle(styles.shrinkPaneOrSplitHorizontal, {
+    maxHeight: plugin.getSettings('doubleClickMaximizeActivePaneShrinkMin'),
+  });
+
   // --- Tab Header Double Click Event ---
   const tabHeaderDoubleClickListener = (e: MouseEvent) => {
     // paneContainer > paneContentContainer/paneHeaderContainer > tabHeader
@@ -284,6 +299,17 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
         toggleMaximizeActiveTab(activePaneEl, maxActiveTabEnabledFlag, true);
       }
     },
+  );
+
+  // Update min width/height for squeezed panes when
+  // doubleClickMaximizeActivePaneShrinkMin is changed.
+  plugin.onSettingsChange(
+    'doubleClickMaximizeActivePaneShrinkMin',
+    debounce(newVal => {
+      // Update the new values to styles.
+      jstyle(styles.shrinkPaneOrSplitVertical, {maxWidth: newVal});
+      jstyle(styles.shrinkPaneOrSplitHorizontal, {maxHeight: newVal});
+    }, MAGIC_DEBOUNCE_TIMEOUT),
   );
 
   return () => {

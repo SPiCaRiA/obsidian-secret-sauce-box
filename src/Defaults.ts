@@ -42,7 +42,11 @@ const DEFAULT_TOOL_TOGGLES: SettingsSauceToggles = {
 
 export const DEFAULT_SETTINGS: Settings = {
   ...DEFAULT_TOOL_TOGGLES,
-  doubleClickMaximizeActivePaneShrinkMin: 'calc(13.75 * 1 rem)',
+  doubleClickMaximizeActivePaneShrinkMin: 'calc(13.75 * 1rem)',
   globalLangSubtag: 'en',
   hyphenBreakBodyEnabled: false,
 };
+
+// --- Other Default Consts ---
+// The rough reaction time of a human.
+export const MAGIC_DEBOUNCE_TIMEOUT = 250;

@@ -1,18 +1,64 @@
 /**
- * An aphrodite-like wrapper of jss.
+ * An stylex-like wrapper of jss.
  */
 
-import type {Styles, StyleSheetFactoryOptions} from 'jss';
+import type {Styles, StyleSheetFactoryOptions, StyleSheet, Classes} from 'jss';
 
 import jss from 'jss';
 import presets from 'jss-preset-default';
 
+type JStyleClasses<Name extends string | number | symbol> = Record<
+  Name,
+  {
+    ruleName: string;
+    className: Classes<Name>[Name];
+    __rawStyleSheet: StyleSheet<Name>;
+  }
+>;
+
 jss.setup(presets());
 
 export default function jstyle<Name extends string | number | symbol>(
+  jstyleClass: JStyleClasses<Name>[Name],
+): Classes<Name>[Name];
+
+export default function jstyle<Name extends string | number | symbol>(
+  jstyleClass: JStyleClasses<Name>[Name],
+  data: {},
+): Classes<Name>[Name];
+
+export default function jstyle<Name extends string | number | symbol>(
+  jstyleClass: JStyleClasses<Name>[Name],
+  data?: {},
+): Classes<Name>[Name] {
+  const {ruleName, className, __rawStyleSheet: sheet} = jstyleClass;
+
+  if (data) {
+    sheet.update(ruleName, data);
+  }
+
+  return className;
+}
+
+jstyle.create = function <Name extends string | number | symbol>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   styles: Partial<Styles<Name, any, undefined>>,
   options?: StyleSheetFactoryOptions,
-) {
-  return jss.createStyleSheet(styles, options).attach().classes;
-}
+): JStyleClasses<Name> {
+  const styleSheet = jss.createStyleSheet(styles, options).attach();
+
+  const styleSheetRecord = (Object.keys(styleSheet.classes) as Name[]).reduce(
+    (res, name) => {
+      (res as JStyleClasses<Name>)[name] = {
+        ruleName: name.toString(),
+        className: styleSheet.classes[name],
+        __rawStyleSheet: styleSheet,
+      };
+
+      return res;
+    },
+    {},
+  ) as JStyleClasses<Name>;
+
+  return styleSheetRecord;
+};

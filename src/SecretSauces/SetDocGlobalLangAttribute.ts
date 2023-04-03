@@ -1,10 +1,12 @@
 import {Plugin} from 'Plugin.types';
 
 import {EventDelegate} from 'EventDelegate';
+import {MAGIC_DEBOUNCE_TIMEOUT} from 'Defaults';
 
+import {debounce} from 'obsidian';
 import jstyle from 'jstyle';
 
-const styles = jstyle({
+const styles = jstyle.create({
   hyphenBreakBody: {
     '& .markdown-preview-view': {
       hyphens: 'auto !important',
@@ -21,37 +23,38 @@ const styles = jstyle({
  */
 export function setDocGlobalLangAttribute(plugin: Plugin) {
   const eventDelegate = new EventDelegate();
-  const htmlEl = activeDocument.children[0 /* the html element */];
-
-  const getBodyFromHTML = (htmlEl: Element) => htmlEl.children[1];
+  const htmlEl = activeDocument.documentElement;
+  const bodyEl = activeDocument.body;
 
   // Set doc lang attribute
   htmlEl.setAttribute('lang', plugin.getSettings('globalLangSubtag'));
 
   // If hyphen break enabled, apply the style.
   if (plugin.getSettings('hyphenBreakBodyEnabled')) {
-    getBodyFromHTML(htmlEl).addClass(styles.hyphenBreakBody);
+    bodyEl.addClass(jstyle(styles.hyphenBreakBody));
   }
 
   // Update lang attributes when global language subtag has changed.
-  plugin.onSettingsChange('globalLangSubtag', newSubTag =>
-    htmlEl.setAttribute('lang', newSubTag),
+  plugin.onSettingsChange(
+    'globalLangSubtag',
+    debounce(
+      newSubTag => htmlEl.setAttribute('lang', newSubTag),
+      MAGIC_DEBOUNCE_TIMEOUT,
+    ),
   );
 
   // Toggle hyphen line break when hyphenBreakBodyEnabled has changed.
   plugin.onSettingsChange('hyphenBreakBodyEnabled', enabled => {
-    const bodyEl = getBodyFromHTML(htmlEl);
-
     if (enabled) {
-      bodyEl.addClass(styles.hyphenBreakBody);
+      bodyEl.addClass(jstyle(styles.hyphenBreakBody));
     } else {
-      bodyEl.removeClass(styles.hyphenBreakBody);
+      bodyEl.removeClass(jstyle(styles.hyphenBreakBody));
     }
   });
 
   return () => {
     eventDelegate.removeAll();
     htmlEl.removeAttribute('lang');
-    getBodyFromHTML(htmlEl).removeClass(styles.hyphenBreakBody);
+    bodyEl.removeClass(jstyle(styles.hyphenBreakBody));
   };
 }

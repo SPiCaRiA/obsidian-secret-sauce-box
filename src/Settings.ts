@@ -52,7 +52,22 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName('Minimum width/height of the squeezed non-active pane')
-      .setDesc('Default value is the same as that of VSCode.')
+      .setDesc(
+        createFragment(el => {
+          el.appendText(
+            'Default value is the same as that of VSCode. The value must be ' +
+              'a valid ',
+          );
+          el.appendChild(
+            createEl('a', undefined, a => {
+              a.href =
+                'https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units';
+              a.appendText('CSS value');
+            }),
+          );
+          el.appendText('.');
+        }),
+      )
       .addText(text =>
         text
           .setValue(
