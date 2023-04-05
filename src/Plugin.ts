@@ -1,5 +1,5 @@
 import type {SauceName} from 'Sauces.types';
-import type {Settings, SettingsChangeCallback} from 'Settings.types';
+import type {OnSettingChangeCallback, Settings} from 'Settings.types';
 
 import {DEFAULT_SETTINGS, sauceLoadStageMap, sauceMap} from 'Defaults';
 import {buildSauceManager} from 'SauceManager';
@@ -11,8 +11,8 @@ import {Plugin} from 'obsidian';
 export default class SecretSauceBoxPlugin extends Plugin {
   private settings: Settings;
   private sauceManager: SauceManager;
-  private settingsChangeCallbacks: {
-    [settingsName in keyof Settings]?: SettingsChangeCallback<keyof Settings>[];
+  private onSettingChangeCallbacks: {
+    [settingName in keyof Settings]?: OnSettingChangeCallback<keyof Settings>[];
   } = {};
 
   // --- General Obsidian Plug-in Methods ---
@@ -44,9 +44,9 @@ export default class SecretSauceBoxPlugin extends Plugin {
 
   // --- Custom Methods ---
   private loadSauces() {
-    // Register on settings change callback for all sauces.
+    // Register onSettingChange callbacks for all sauces.
     (Object.keys(sauceMap) as SauceName[]).forEach(sauceName =>
-      this.onSettingsChange(sauceName, sauceEnabled =>
+      this.onSettingChange(sauceName, sauceEnabled =>
         sauceEnabled
           ? // Sauce enabled.
             this.sauceManager.loadSauce(sauceName)
@@ -70,31 +70,31 @@ export default class SecretSauceBoxPlugin extends Plugin {
     );
   }
 
-  public onSettingsChange<K extends keyof Settings>(
-    settingsName: K,
-    callback: SettingsChangeCallback<K>,
+  public onSettingChange<K extends keyof Settings>(
+    settingName: K,
+    callback: OnSettingChangeCallback<K>,
   ) {
-    if (!this.settingsChangeCallbacks[settingsName]) {
-      this.settingsChangeCallbacks[settingsName] = [];
+    if (!this.onSettingChangeCallbacks[settingName]) {
+      this.onSettingChangeCallbacks[settingName] = [];
     }
-    this.settingsChangeCallbacks[settingsName]?.push(callback);
+    this.onSettingChangeCallbacks[settingName]?.push(callback);
   }
 
-  public getSettings<K extends keyof Settings>(settingsName: K) {
-    return this.settings[settingsName];
+  public getSetting<K extends keyof Settings>(settingName: K) {
+    return this.settings[settingName];
   }
 
-  public setSettings<K extends keyof Settings>(
-    settingsName: K,
+  public setSetting<K extends keyof Settings>(
+    settingName: K,
     val: Settings[K],
   ) {
-    this.settingsChangeCallbacks[settingsName]?.forEach(cb =>
-      cb(val, this.settings[settingsName]),
+    this.onSettingChangeCallbacks[settingName]?.forEach(cb =>
+      cb(val, this.settings[settingName]),
     );
-    this.settings[settingsName] = val;
+    this.settings[settingName] = val;
   }
 
-  public getDefaultSettings<K extends keyof Settings>(settingsName: K) {
-    return DEFAULT_SETTINGS[settingsName];
+  public getDefaultSetting<K extends keyof Settings>(settingName: K) {
+    return DEFAULT_SETTINGS[settingName];
   }
 }

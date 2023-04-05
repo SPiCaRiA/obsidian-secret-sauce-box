@@ -26,15 +26,15 @@ export function setDocGlobalLangAttribute(plugin: Plugin) {
   const bodyEl = activeDocument.body;
 
   // Set doc lang attribute
-  htmlEl.setAttribute('lang', plugin.getSettings('globalLangSubtag'));
+  htmlEl.setAttribute('lang', plugin.getSetting('globalLangSubtag'));
 
   // If hyphen break enabled, apply the style.
-  if (plugin.getSettings('hyphenBreakBodyEnabled')) {
+  if (plugin.getSetting('hyphenBreakBodyEnabled')) {
     bodyEl.addClass(jstyle(styles.hyphenBreakBody));
   }
 
   // Update lang attributes when global language subtag has changed.
-  plugin.onSettingsChange(
+  plugin.onSettingChange(
     'globalLangSubtag',
     debounce(
       newSubTag => htmlEl.setAttribute('lang', newSubTag),
@@ -43,7 +43,7 @@ export function setDocGlobalLangAttribute(plugin: Plugin) {
   );
 
   // Toggle hyphen line break when hyphenBreakBodyEnabled has changed.
-  plugin.onSettingsChange('hyphenBreakBodyEnabled', enabled => {
+  plugin.onSettingChange('hyphenBreakBodyEnabled', enabled => {
     if (enabled) {
       bodyEl.addClass(jstyle(styles.hyphenBreakBody));
     } else {

@@ -43,9 +43,9 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
       )
       .addToggle(toggle =>
         toggle
-          .setValue(this.plugin.getSettings('doubleClickMaximizeActive'))
+          .setValue(this.plugin.getSetting('doubleClickMaximizeActive'))
           .onChange(async value => {
-            this.plugin.setSettings('doubleClickMaximizeActive', value);
+            this.plugin.setSetting('doubleClickMaximizeActive', value);
             await this.plugin.saveSettings();
           }),
       );
@@ -71,21 +71,20 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
       .addText(text =>
         text
           .setValue(
-            this.plugin.getSettings('doubleClickMaximizeActivePaneShrinkMin'),
+            this.plugin.getSetting('doubleClickMaximizeActivePaneShrinkMin'),
           )
           .setPlaceholder(
-            this.plugin.getDefaultSettings(
+            this.plugin.getDefaultSetting(
               'doubleClickMaximizeActivePaneShrinkMin',
             ),
           )
           .onChange(async value => {
-            this.plugin.setSettings(
+            this.plugin.setSetting(
               'doubleClickMaximizeActivePaneShrinkMin',
-              value !== ''
-                ? value
-                : this.plugin.getDefaultSettings(
-                    'doubleClickMaximizeActivePaneShrinkMin',
-                  ),
+              value ||
+                this.plugin.getDefaultSetting(
+                  'doubleClickMaximizeActivePaneShrinkMin',
+                ),
             );
             await this.plugin.saveSettings();
           }),
@@ -103,9 +102,9 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
       )
       .addToggle(toggle =>
         toggle
-          .setValue(this.plugin.getSettings('preserveActiveTab'))
+          .setValue(this.plugin.getSetting('preserveActiveTab'))
           .onChange(async value => {
-            this.plugin.setSettings('preserveActiveTab', value);
+            this.plugin.setSetting('preserveActiveTab', value);
             await this.plugin.saveSettings();
           }),
       );
@@ -121,9 +120,9 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
       )
       .addToggle(toggle =>
         toggle
-          .setValue(this.plugin.getSettings('setDocGlobalLangAttribute'))
+          .setValue(this.plugin.getSetting('setDocGlobalLangAttribute'))
           .onChange(async value => {
-            this.plugin.setSettings('setDocGlobalLangAttribute', value);
+            this.plugin.setSetting('setDocGlobalLangAttribute', value);
             await this.plugin.saveSettings();
           }),
       );
@@ -136,9 +135,9 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
       )
       .addToggle(toggle =>
         toggle
-          .setValue(this.plugin.getSettings('hyphenBreakBodyEnabled'))
+          .setValue(this.plugin.getSetting('hyphenBreakBodyEnabled'))
           .onChange(async value => {
-            this.plugin.setSettings('hyphenBreakBodyEnabled', value);
+            this.plugin.setSetting('hyphenBreakBodyEnabled', value);
             await this.plugin.saveSettings();
           }),
       );
@@ -169,14 +168,12 @@ export class SecretSauceBoxSettingTab extends PluginSettingTab {
       )
       .addText(text =>
         text
-          .setValue(this.plugin.getSettings('globalLangSubtag'))
-          .setPlaceholder(this.plugin.getDefaultSettings('globalLangSubtag'))
+          .setValue(this.plugin.getSetting('globalLangSubtag'))
+          .setPlaceholder(this.plugin.getDefaultSetting('globalLangSubtag'))
           .onChange(async value => {
-            this.plugin.setSettings(
+            this.plugin.setSetting(
               'globalLangSubtag',
-              value !== ''
-                ? value
-                : this.plugin.getDefaultSettings('globalLangSubtag'),
+              value || this.plugin.getDefaultSetting('globalLangSubtag'),
             );
             await this.plugin.saveSettings();
           }),

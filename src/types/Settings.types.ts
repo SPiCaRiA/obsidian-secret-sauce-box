@@ -2,9 +2,6 @@ import {SauceName} from 'Sauces.types';
 
 export type SettingsSauceToggles = Record<SauceName, boolean>;
 
-// For now, all settings are used to toggle sauces. But in future,
-// we might have more global settings, which can be unioned with
-// the toggle settings.
 export type Settings = SettingsSauceToggles & {
   // Minimum width/height of the shrinked non-active pane.
   doubleClickMaximizeActivePaneShrinkMin: string;
@@ -16,7 +13,7 @@ export type Settings = SettingsSauceToggles & {
   hyphenBreakBodyEnabled: boolean;
 };
 
-export type SettingsChangeCallback<K extends keyof Settings> = (
+export type OnSettingChangeCallback<K extends keyof Settings> = (
   newVal: Settings[K],
   oldVal: Settings[K],
 ) => void;

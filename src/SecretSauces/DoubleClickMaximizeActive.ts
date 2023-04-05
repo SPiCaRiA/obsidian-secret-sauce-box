@@ -197,10 +197,10 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
 
   // Apply initial styles from setting values.
   jstyle(styles.shrinkPaneOrSplitVertical, {
-    maxWidth: plugin.getSettings('doubleClickMaximizeActivePaneShrinkMin'),
+    maxWidth: plugin.getSetting('doubleClickMaximizeActivePaneShrinkMin'),
   });
   jstyle(styles.shrinkPaneOrSplitHorizontal, {
-    maxHeight: plugin.getSettings('doubleClickMaximizeActivePaneShrinkMin'),
+    maxHeight: plugin.getSetting('doubleClickMaximizeActivePaneShrinkMin'),
   });
 
   // --- Tab Header Double Click Event ---
@@ -303,7 +303,7 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
 
   // Update min width/height for squeezed panes when
   // doubleClickMaximizeActivePaneShrinkMin is changed.
-  plugin.onSettingsChange(
+  plugin.onSettingChange(
     'doubleClickMaximizeActivePaneShrinkMin',
     debounce(newVal => {
       // Update the new values to styles.
