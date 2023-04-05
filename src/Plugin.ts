@@ -1,10 +1,10 @@
-import type {Settings, SettingsChangeCallback} from 'Settings.types';
 import type {SauceName} from 'Sauces.types';
+import type {Settings, SettingsChangeCallback} from 'Settings.types';
 
 import {DEFAULT_SETTINGS, sauceLoadStageMap, sauceMap} from 'Defaults';
-import {SecretSauceBoxSettingTab} from 'Settings';
 import {buildSauceManager} from 'SauceManager';
 import {sauceLoadStageEnum, SauceManager} from 'Sauces.types';
+import {SecretSauceBoxSettingTab} from 'Settings';
 
 import {Plugin} from 'obsidian';
 

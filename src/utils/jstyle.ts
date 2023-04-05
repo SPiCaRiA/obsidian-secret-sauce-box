@@ -2,7 +2,7 @@
  * An stylex-like wrapper of jss.
  */
 
-import type {Styles, StyleSheetFactoryOptions, StyleSheet, Classes} from 'jss';
+import type {Classes, Styles, StyleSheet, StyleSheetFactoryOptions} from 'jss';
 
 import jss from 'jss';
 import presets from 'jss-preset-default';
@@ -24,12 +24,12 @@ export default function jstyle<Name extends string | number | symbol>(
 
 export default function jstyle<Name extends string | number | symbol>(
   jstyleClass: JStyleClasses<Name>[Name],
-  data: {},
+  data: Record<string, unknown>,
 ): Classes<Name>[Name];
 
 export default function jstyle<Name extends string | number | symbol>(
   jstyleClass: JStyleClasses<Name>[Name],
-  data?: {},
+  data?: Record<string, unknown>,
 ): Classes<Name>[Name] {
   const {ruleName, className, __rawStyleSheet: sheet} = jstyleClass;
 

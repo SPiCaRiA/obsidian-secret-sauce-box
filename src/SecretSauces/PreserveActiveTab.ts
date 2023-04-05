@@ -1,5 +1,5 @@
-import type {Plugin} from 'Plugin.types';
 import type {WorkspaceExt, WorkspaceTabGroupExt} from 'ObExt.types';
+import type {Plugin} from 'Plugin.types';
 
 import {EventDelegate} from 'EventDelegate';
 

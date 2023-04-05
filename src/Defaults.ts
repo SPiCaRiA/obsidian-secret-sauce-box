@@ -1,5 +1,5 @@
-import type {Settings, SettingsSauceToggles} from 'Settings.types';
 import type {SauceMap, SauceName, SauceNameByLoadStageMap} from 'Sauces.types';
+import type {Settings, SettingsSauceToggles} from 'Settings.types';
 
 import {doubleClickMaximizeActive} from 'DoubleClickMaximizeActive';
 import {preserveActiveTab} from 'PreserveActiveTab';

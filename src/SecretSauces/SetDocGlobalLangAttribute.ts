@@ -1,10 +1,9 @@
+import {MAGIC_DEBOUNCE_TIMEOUT} from 'Defaults';
+import {EventDelegate} from 'EventDelegate';
 import {Plugin} from 'Plugin.types';
 
-import {EventDelegate} from 'EventDelegate';
-import {MAGIC_DEBOUNCE_TIMEOUT} from 'Defaults';
-
-import {debounce} from 'obsidian';
 import jstyle from 'jstyle';
+import {debounce} from 'obsidian';
 
 const styles = jstyle.create({
   hyphenBreakBody: {

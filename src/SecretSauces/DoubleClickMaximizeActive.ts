@@ -1,13 +1,13 @@
 import type {DOMListener} from 'Events.types';
 import type {
   MarkedHTMLElement,
-  WorkspaceLeafExt,
   WorkspaceExt,
+  WorkspaceLeafExt,
 } from 'ObExt.types';
 import type {Plugin} from 'Plugin.types';
 
-import {EventDelegate} from 'EventDelegate';
 import {MAGIC_DEBOUNCE_TIMEOUT} from 'Defaults';
+import {EventDelegate} from 'EventDelegate';
 
 import jstyle from 'jstyle';
 import {debounce} from 'obsidian';

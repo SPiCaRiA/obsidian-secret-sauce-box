@@ -1,4 +1,4 @@
-import type {WorkspaceLeaf, Workspace} from 'obsidian';
+import type {Workspace, WorkspaceLeaf} from 'obsidian';
 
 export type MarkedHTMLElement<T> = HTMLElement & {
   [label in symbol]: T;
