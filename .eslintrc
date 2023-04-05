@@ -63,5 +63,13 @@
     "import/newline-after-import": "warn",
     // (This helps configure simple-import-sort) Merge imports of the same file
     "import/no-duplicates": "warn"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
+    }
+  ]
 }
