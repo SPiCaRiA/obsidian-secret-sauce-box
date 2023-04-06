@@ -25,16 +25,20 @@ const styles = jstyle.create(
       maxWidth: '0px !important',
     },
 
-    shrinkPaneOrSplitVertical: {
-      maxWidth: ({maxWidth}) => maxWidth,
-    },
+    shrinkPaneOrSplit: ({minSize}) => ({
+      '.mod-vertical > &': {
+        maxWidth: minSize,
+      },
 
-    shrinkPaneOrSplitHorizontal: {
-      maxHeight: ({maxHeight}) => maxHeight,
-    },
+      '.mod-horizontal > &': {
+        maxHeight: minSize,
+      },
+    }),
   },
   {link: true},
 );
+
+const shrinkClass = jstyle(styles.shrinkPaneOrSplit);
 
 function registerDoubleClickEventOnTabHeaders(
   eventDelegate: EventDelegate,
@@ -87,12 +91,6 @@ function toggleMaximizeActiveTab(
   });
 }
 
-function getSplitContainerShrinkClass(split: WorkspaceLeafExt) {
-  return split.containerEl.hasClass('mod-vertical')
-    ? jstyle(styles.shrinkPaneOrSplitVertical)
-    : jstyle(styles.shrinkPaneOrSplitHorizontal);
-}
-
 /**
  * Starting from the active pane, traverse all the panes and parent split
  * containers util root split container is reached. Shrink the non-active panes
@@ -135,21 +133,15 @@ function enableMaximizeActivePane(
   ]);
 
   const recurseEnableMaximizeActivePane = (currentSplit: WorkspaceLeafExt) => {
-    const shrinkClass = getSplitContainerShrinkClass(currentSplit);
-
     currentSplit.children.forEach(paneOrSplit => {
-      if (!maxPaneOrSplits.has(paneOrSplit)) {
-        // Shrink paneOrSplit.
-        const paneOrSplitEl = paneOrSplit.containerEl;
+      const paneOrSplitEl = paneOrSplit.containerEl;
 
-        // Apply if not shrinked.
-        if (!paneOrSplitEl.hasClass(shrinkClass)) {
-          paneOrSplitEl.addClass(shrinkClass);
-        }
+      if (!maxPaneOrSplits.has(paneOrSplit)) {
+        // Shrink paneOrSplit by applying the shrink style.
+        paneOrSplitEl.addClass(shrinkClass);
       } else {
-        // Maximize paneOrSplit.
-        // Remove the shrink style added before.
-        paneOrSplit.containerEl.removeClass(shrinkClass);
+        // Maximize paneOrSplit by removing the shrink style applied before.
+        paneOrSplitEl.removeClass(shrinkClass);
       }
     });
 
@@ -169,14 +161,10 @@ function enableMaximizeActivePane(
  * @param {WorkspaceLeafExt} split the root split container
  */
 function disableMaximizeActivePane(split: WorkspaceLeafExt) {
-  const shrinkClass = getSplitContainerShrinkClass(split);
-
   split.children.forEach(paneOrSplit => {
     const paneOrSplitEl = paneOrSplit.containerEl;
 
-    if (paneOrSplitEl.hasClass(shrinkClass)) {
-      paneOrSplitEl.removeClass(shrinkClass);
-    }
+    paneOrSplitEl.removeClass(shrinkClass);
 
     if (paneOrSplitEl.hasClass('workspace-split')) {
       disableMaximizeActivePane(paneOrSplit);
@@ -196,11 +184,8 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
   const rootSplit = getActivePane().getRoot() as WorkspaceLeafExt;
 
   // Apply initial styles from setting values.
-  jstyle(styles.shrinkPaneOrSplitVertical, {
-    maxWidth: plugin.getSetting('doubleClickMaximizeActivePaneShrinkMin'),
-  });
-  jstyle(styles.shrinkPaneOrSplitHorizontal, {
-    maxHeight: plugin.getSetting('doubleClickMaximizeActivePaneShrinkMin'),
+  jstyle(styles.shrinkPaneOrSplit, {
+    minSize: plugin.getSetting('doubleClickMaximizeActivePaneShrinkMin'),
   });
 
   // --- Tab Header Double Click Event ---
@@ -267,6 +252,21 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
           delete paneEl[maxActiveTabEnabledFlag];
         }
       });
+
+    // Disable pane maximizing behavior when all non-root splits are closed.
+    if (
+      maxActivePaneEnabled &&
+      rootSplit.children.length === 1 &&
+      /*
+       * When splitting down the root container, a new horizontal split is
+       * created to contain the panes because the root container is a vertical
+       * split.
+       */
+      !rootSplit.children[0].containerEl.hasClass('workspace-split')
+    ) {
+      maxActivePaneEnabled = false;
+      disableMaximizeActivePane(rootSplit);
+    }
   });
 
   // --- Switch Max Pane When Active Leaf Changes ---
@@ -306,9 +306,10 @@ export function doubleClickMaximizeActive(plugin: Plugin) {
   plugin.onSettingChange(
     'doubleClickMaximizeActivePaneShrinkMin',
     debounce(newVal => {
-      // Update the new values to styles.
-      jstyle(styles.shrinkPaneOrSplitVertical, {maxWidth: newVal});
-      jstyle(styles.shrinkPaneOrSplitHorizontal, {maxHeight: newVal});
+      // Update new shrink size to the style.
+      jstyle(styles.shrinkPaneOrSplit, {
+        minSize: newVal,
+      });
     }, MAGIC_DEBOUNCE_TIMEOUT),
   );
 
