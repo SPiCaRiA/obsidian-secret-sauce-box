@@ -9,11 +9,12 @@ A plug-in with all my nice little JavaScript secret sauce snippets, with some fl
 Double clicking a tab header in a pane with:
 - **Tabs stacked**: maximize the current sliding tab.
 
-![demo](./assets/double-click-maximizing-tab.mov)
+
+https://user-images.githubusercontent.com/11176415/230676019-54a55667-7e2f-48d4-a013-32c993e8f33e.mov
 
 - **Tabs unstacked**: maximize the current pane (same behavior as double clicking tab headers in VSCode).
 
-![demo](./assets/double-click-maximize-active-pane.mov)
+https://user-images.githubusercontent.com/11176415/230676040-4bfe9091-2bcf-4af6-9cda-6d54b91f9cae.mov
 
 ## Preserve Active Tab
 
@@ -21,11 +22,11 @@ When setting a pane from "Unstack tabs" to "Stack tabs", the active tab is focus
 
 **Before**: the active (third) tab is not expanded.
 
-![demo](./assets/preserve-active-tab-off.mov)
+https://user-images.githubusercontent.com/11176415/230675993-6fed0227-2805-4855-8eb9-b48df5bf6444.mov
 
 **After**
 
-![demo](./assets/preserve-active-tab-on.mov)
+https://user-images.githubusercontent.com/11176415/230675974-dd96b6a6-a55f-40db-8486-1fb095a793c5.mov
 
 ## Set Doc Global Lang Attribute
 
